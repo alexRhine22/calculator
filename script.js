@@ -1,5 +1,3 @@
-
-
 function add(num1, num2)
 {
     if (isNaN(num1) || isNaN(num2))
@@ -69,7 +67,6 @@ function divide(num1, num2)
     }
 }
 
-
 function operate(num1, num2, operator)
 {
     const additionSign = "+";
@@ -102,6 +99,7 @@ let longTempAnswer = null;
 let inputNum1 = null;
 let inputNum2 = null;
 let operator = "";
+let positiveNumber = true;
 
 function buttonPressed(buttonName)
 {
@@ -110,6 +108,7 @@ function buttonPressed(buttonName)
     const multiplicationSign = "*";
     const divisionSign = "/";
     const equalsSign = "=";
+    const positiveNegativeSign = "polarSign";
     const clearMemorySign = "c";
     const backspaceSign = "b";
     const display = document.querySelector('.calculator-screen')
@@ -127,47 +126,46 @@ function buttonPressed(buttonName)
         {
             inputNum2 = parseFloat(display.value);
         }
-        else if (inputNum1 != null && inputNum2 != null)
+        
+        if (inputNum1 != null && inputNum2 != null)
         {
             longTempAnswer += operate(inputNum1, inputNum2, operator);
             inputNum1 = null;
             inputNum2 = null;
+
         }
         
-        // console.log("inputNum1 = " + inputNum1);
-        // console.log("inputNum2 = " + inputNum2);
         operator = buttonName;
         display.value = "";
     }
     else if (buttonName === equalsSign)
     {           
-        if (inputNum2 == null)
+        if (display.value.length != 0 && display.value != ".")
         {
-            console.log("1st");
-            inputNum2 = parseFloat(display.value);
-            longTempAnswer += operate(inputNum1, inputNum2, operator);
-            display.value = longTempAnswer;
-            longTempAnswer = null;
-            inputNum1 = null;
-            inputNum2 = null;
-            operator = buttonName;
+            if (inputNum2 == null)
+            {
+                inputNum2 = parseFloat(display.value);
+                longTempAnswer += operate(inputNum1, inputNum2, operator);
+                display.value = longTempAnswer;
+                longTempAnswer = null;
+                inputNum1 = null;
+                inputNum2 = null;
+                operator = buttonName;
+            }
+            else if (inputNum1 != null && inputNum2 != null)
+            {
+                longTempAnswer += operate(inputNum1, longTempAnswer, operator);
+                display.value = longTempAnswer;
+                longTempAnswer = null;
+                inputNum1 = null;
+                inputNum2 = null;
+                operator = buttonName;
+            }
         }
-        else if (inputNum1 != null || inputNum2 == null)
-        {
-            console.log("2nd");
-            longTempAnswer += operate(inputNum1, longTempAnswer, operator);
-            console.log(longTempAnswer);
-            display.value = longTempAnswer;
-            longTempAnswer = null;
-            inputNum1 = null;
-            inputNum2 = null;
-            operator = buttonName;
-        }
-
+        
     }
     else if (buttonName === clearMemorySign)
     {
-        console.log("CLEAR MEM");
         // if clear memory sign is clicked
         display.value = ""; // clear display
         longTempAnswer = null; // reset calulator values
@@ -179,6 +177,26 @@ function buttonPressed(buttonName)
     {
         // if backspace button pressed
         display.value = display.value.substring(0, display.value.length - 1); // remove most recent character
+    }
+    else if (buttonName == positiveNegativeSign)
+    {
+        // if positive/negative button is pressed
+        if (display.value.length != 0)
+        {
+            // if a number is enter on the screen
+            if (positiveNumber == true)
+            {
+                // if displayNumber is currently positive
+                display.value = "-" + display.value; // change to negative number
+                positiveNumber = false; // make positiveNumber false
+            }
+            else if (positiveNumber == false)
+            {
+                // if displayNumber is currently negative
+                display.value = display.value.substring(1, display.value.length);
+                positiveNumber = true;
+            }
+        }
     }
     else
     {
@@ -194,10 +212,3 @@ function buttonPressed(buttonName)
         }
     }
 }
-
-function main()
-{
-
-}
-
-main();
