@@ -1,148 +1,168 @@
 
-function add(numberArr)
+
+function add(num1, num2)
 {
-    if (Array.isArray(numberArr) && numberArr.length > 0)
+    if (isNaN(num1) || isNaN(num2))
     {
-        var sum = 0;
-
-        // if parameter numberArr is an array and is > 0
-        for (i = 0; i < numberArr.length; i++)
-        {
-            sum += numberArr[i];
-        }
-
-        return sum;
+        // if bad input print error message
+        return "Addition Error: Invalid Input";
     }
     else 
     {
-        // if bad input print error message
-        return "Error!: Could Be\n(1) Bad input\n(2) Computation Error";
+        // if both parameters are numbers
+        var sum = num1 + num2;
+        return sum; 
     }
 }
 
-function subtract(numberArr)
+function subtract(num1, num2)
 {
-    if (Array.isArray(numberArr) && numberArr.length > 0)
+    if (isNaN(num1) || isNaN(num2))
     {
-        // if parameter numberArr is an array and is > 0
-        var difference = numberArr[0]; // set to first number in numberArr
-
-        for (i = 1; i < numberArr.length; i++)
-        {
-            // skip first number of array   
-            difference -= numberArr[i];
-        }
-
+        // if bad input print error message
+        return "Subtraction Error: Invalid Input";
+    }
+    else 
+    {
+        // if both parameters are numbers
+        var difference = num1 - num2;
         return difference;
     }
-    else 
-    {
-        // if bad input print error message
-        return "Error!: Could Be\n(1) Bad input\n(2) Computation Error";
-    }
 }
 
-function multiply(numberArr)
+function multiply(num1, num2)
 {
-    if (Array.isArray(numberArr) && numberArr.length > 0)
+    if (isNaN(num1) || isNaN(num2))
     {
-        // if parameter numberArr is an array and is > 0
-        var product = numberArr[0];
-
-        for (i = 1; i < numberArr.length; i++)
-        {
-            // skip first number of array   
-            product *= numberArr[i];
-        }
-
+        // if bad input print error message
+        return "Multiplication Error: Invalid Input";
+    }
+    else 
+    {
+        // if both parameters are numbers
+        var product = num1 * num2;
         return product;
     }
-    else 
-    {
-        // if bad input print error message
-        return "Error!: Could Be\n(1) Bad input\n(2) Computation Error";
-    }
 }
 
-function divide(numberArr)
+function divide(num1, num2)
 {
-    if (Array.isArray(numberArr) && numberArr.length > 0)
+    if (isNaN(num1) || isNaN(num2))
     {
-        // if parameter numberArr is an array and is > 0
-
-        for (i = 0 ; i < numberArr.length; i++)
-        {
-            if (numberArr[i] == 0)
-            {
-                return "Error: Cannot divide by zero!"
-            }
-        }
-
-        var quotient = numberArr[0];
-
-        for (i = 1; i < numberArr.length; i++)
-        {
-            // skip first number of array   
-            quotient /= numberArr[i];
-        }
-
-        return quotient;
+        // if bad input print error message
+        return "Division Error: Invalid Input";
     }
     else 
     {
-        // if bad input print error message
-        return "Error!: Could Be\n(1) Bad input\n(2) Computation Error";
+        // if both parameters are numbers
+        if (num2 != 0)
+        {
+            // if not dividing by zero
+            var quotient = num1 / num2;
+            return quotient;
+        }
+        else
+        {
+            // error message if dividing by zerp
+            return "Division Error: Cannot divide by zero"; 
+        }
     }
 }
 
-function operate(number1, number2, operator)
+
+function operate(num1, num2, operator)
 {
     const additionSign = "+";
     const subtractionSign = "-";
     const multiplicationSign = "*";
     const divisionSign = "/";
 
+    var answer = 0;
     if (operator === additionSign)
     {
-
+        answer = add(num1, num2);
     }
     else if (operator === subtractionSign)
     {
-
+        answer = subtract(num1, num2);
     }
     else if (operator === multiplicationSign)
     {
-
+        answer = multiply(num1, num2);
     }
     else if (operator === divisionSign)
     {
+        answer = divide(num1, num2);
+    }
+
+    return answer;
+}
+
+let longTempAnswer = 0;
+let inputNum1 = null;
+let inputNum2 = null;
+let operator = "";
+
+function buttonPressed(buttonName)
+{
+    const additionSign = "+";
+    const subtractionSign = "-";
+    const multiplicationSign = "*";
+    const divisionSign = "/";
+    const equalsSign = "=";
+    const display = document.querySelector('.calculator-screen')
+
+    if (buttonName === additionSign ||
+        buttonName === subtractionSign ||
+        buttonName === multiplicationSign ||
+        buttonName === divisionSign)
+    {
+        // if (inputNum1 == null)
+        // {
+        //     inputNum1 = parseFloat(display.value);
+        // }
+        // else if (!isNaN(inputNum1) && !isNaN(inputNum2))
+        // {
+        //     inputNum1 = operate(inputNum1, inputNum2, operator);
+        //     inputNum2 = null;
+        // }
+        
+        operator = buttonName;
+        display.value = "";
+    }
+    else if (buttonName === equalsSign)
+    {           
+        // if (inputNum2 == null)
+        // {
+            // first input given
+            inputNum2 = parseFloat(display.value);
+            longTempAnswer += operate(inputNum1, inputNum2, operator);
+            display.value = longTempAnswer;
+            console.log(inputNum1 + " "+operator+" " + inputNum2 + " = " + operate(inputNum1, inputNum2, operator));
+            operator = buttonName;
+        // }
+    }
+    else
+    {
+        // if (operator == equalsSign)
+        // {
+        //     display.value = "";
+        //     display.value = display.value + buttonName;
+        //     operator = "";
+        //     inputNum1 = operate(inputNum1, inputNum2, operator);
+        //     inputNum2 = null;
+        // }
+        // else 
+        // {
+            display.value = display.value + buttonName;
         
     }
+    // console.log(buttonName);
 }
 
 function main()
 {
-    // var addArr = [5, 5, 5];
-    // console.log("5 + 5 + 5 = " + add(addArr));
 
-    // var subtractArr = [15, 5, 5, 5];
-    // console.log("15 - 5 - 5 - 5 = " + subtract(subtractArr));
-    // console.log("asd = " + subtract("asd"));
-    // console.log("0 = " + subtract("0"));
-    // console.log(" = " + subtract());
-
-    // var multiplyArr1 = [5,5];
-    // var multiplyArr2 = [5,5,5];
-    // console.log("5 * 5 = " + multiply(multiplyArr1));
-    // console.log("5 * 5 * 5 = " + multiply(multiplyArr2));
-    // console.log("asd = " + multiply("asd"));
-
-    var divideArr1 = [5,5];
-    var divideArr2 = [5,5,5];
-    console.log("5 / 5 = " + divide(divideArr1));
-    console.log("5 / 5 / 5 = " + divide(divideArr2));
-    console.log("asd = " + divide("asd"));
-    console.log("0 = " + divide([0, 0]));
 }
 
 main();
