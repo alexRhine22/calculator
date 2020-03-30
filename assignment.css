@@ -59,17 +59,14 @@ h1, h2 {
     background-color: #DCDCDC;
 }
 
-
 .calculator-buttons .equals {
     grid-column: 5;
-    grid-row: 3 / span 2;
+    grid-row: 4 / span 2;
     background-color: lightgreen;
     color: black;
 }
 
 .calculator-buttons .equals:hover {
-    grid-column: 5;
-    grid-row: 3 / span 2;
     background-color: limegreen;
 }
 

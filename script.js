@@ -98,7 +98,7 @@ function operate(num1, num2, operator)
     return answer;
 }
 
-let longTempAnswer = 0;
+let longTempAnswer = null;
 let inputNum1 = null;
 let inputNum2 = null;
 let operator = "";
@@ -110,6 +110,8 @@ function buttonPressed(buttonName)
     const multiplicationSign = "*";
     const divisionSign = "/";
     const equalsSign = "=";
+    const clearMemorySign = "c";
+    const backspaceSign = "b";
     const display = document.querySelector('.calculator-screen')
 
     if (buttonName === additionSign ||
@@ -117,47 +119,80 @@ function buttonPressed(buttonName)
         buttonName === multiplicationSign ||
         buttonName === divisionSign)
     {
-        // if (inputNum1 == null)
-        // {
-        //     inputNum1 = parseFloat(display.value);
-        // }
-        // else if (!isNaN(inputNum1) && !isNaN(inputNum2))
-        // {
-        //     inputNum1 = operate(inputNum1, inputNum2, operator);
-        //     inputNum2 = null;
-        // }
+        if (inputNum1 == null)
+        {
+            inputNum1 = parseFloat(display.value);
+        }
+        else if (inputNum1 != null)
+        {
+            inputNum2 = parseFloat(display.value);
+        }
+        else if (inputNum1 != null && inputNum2 != null)
+        {
+            longTempAnswer += operate(inputNum1, inputNum2, operator);
+            inputNum1 = null;
+            inputNum2 = null;
+        }
         
+        // console.log("inputNum1 = " + inputNum1);
+        // console.log("inputNum2 = " + inputNum2);
         operator = buttonName;
         display.value = "";
     }
     else if (buttonName === equalsSign)
     {           
-        // if (inputNum2 == null)
-        // {
-            // first input given
+        if (inputNum2 == null)
+        {
+            console.log("1st");
             inputNum2 = parseFloat(display.value);
             longTempAnswer += operate(inputNum1, inputNum2, operator);
             display.value = longTempAnswer;
-            console.log(inputNum1 + " "+operator+" " + inputNum2 + " = " + operate(inputNum1, inputNum2, operator));
+            longTempAnswer = null;
+            inputNum1 = null;
+            inputNum2 = null;
             operator = buttonName;
-        // }
+        }
+        else if (inputNum1 != null || inputNum2 == null)
+        {
+            console.log("2nd");
+            longTempAnswer += operate(inputNum1, longTempAnswer, operator);
+            console.log(longTempAnswer);
+            display.value = longTempAnswer;
+            longTempAnswer = null;
+            inputNum1 = null;
+            inputNum2 = null;
+            operator = buttonName;
+        }
+
+    }
+    else if (buttonName === clearMemorySign)
+    {
+        console.log("CLEAR MEM");
+        // if clear memory sign is clicked
+        display.value = ""; // clear display
+        longTempAnswer = null; // reset calulator values
+        inputNum1 = null; // reset calulator values
+        inputNum2 = null; // reset calulator values
+        operator = ""; // reset calulator values
+    }
+    else if (buttonName == backspaceSign)
+    {
+        // if backspace button pressed
+        display.value = display.value.substring(0, display.value.length - 1); // remove most recent character
     }
     else
     {
-        // if (operator == equalsSign)
-        // {
-        //     display.value = "";
-        //     display.value = display.value + buttonName;
-        //     operator = "";
-        //     inputNum1 = operate(inputNum1, inputNum2, operator);
-        //     inputNum2 = null;
-        // }
-        // else 
-        // {
+        if (operator == equalsSign)
+        {
+            display.value = "";
             display.value = display.value + buttonName;
-        
+            operator = null;
+        }
+        else 
+        {
+            display.value = display.value + buttonName;
+        }
     }
-    // console.log(buttonName);
 }
 
 function main()
